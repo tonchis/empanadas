@@ -1,0 +1,12 @@
+/* Put your CSS here */
+input {
+  width: 40px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appereance: none;
+  margin: 0;
+}
+
+
