@@ -2,6 +2,7 @@ var template = document.getElementById("pair-template");
 var orders = document.getElementById("orders");
 var addOrder = document.getElementById("add-order");
 var finish = document.getElementById("finish");
+var finalOrder = document.getElementById("final-order");
 var li;
 var ul;
 
@@ -29,10 +30,10 @@ var request = new XMLHttpRequest();
 request.onreadystatechange = function() {
   if(request.readyState === 4 && request.status === 200){
     flavours = JSON.parse(request.responseText);
-    for(var index in flavours) {
+    for(var property in flavours) {
       var option = document.createElement("option");
-      option.setAttribute("value", flavours[index].value);
-      option.innerHTML = flavours[index].name;
+      option.setAttribute("value", property);
+      option.innerHTML = flavours[property];
       template.getElementsByTagName("select")[0].appendChild(option);
     }
 
@@ -50,31 +51,36 @@ addOrder.addEventListener("click", function() {
   orders.appendChild(ul);
 });
 
-function parseOrder(orderEl) {
-  var order = {};
-  for(var i = 0; i < orderEl.children.length; i++) {
-    var pairEl = orderEl.children[i];
-    var amount = parseInt(pairEl.firstElementChild.value);
-    if(pairEl.value !== NaN) {
-      var flavour = pairEl.lastElementChild.value
-      order[flavour] = amount;
+function addOrders() {
+  computedOrder = {};
+  for(var i = 0; i < orders.getElementsByTagName("ul").length; i++) {
+    var order = orders.getElementsByTagName("ul")[i];
+
+    for(var j = 0; j < order.getElementsByTagName("li").length; j++) {
+      var pair = order.getElementsByTagName("li")[j];
+      var amount = parseInt(pair.firstElementChild.value);
+      var flavour = pair.lastElementChild.value;
+
+      if(!isNaN(amount)) {
+        if(computedOrder[flavour] === undefined) {
+          computedOrder[flavour] = 0;
+        }
+        computedOrder[flavour] += amount;
+      }
     }
   }
 
-  return order;
-}
-
-function addOrders() {
-  var finalOrder = [];
-  var parsedOrders = [];
-
-  for(var i = 0; i < orders.children.length; i++) {
-    parsedOrders.push(parseOrder(orders.children[i]));
-  }
-
-  console.log(parsedOrders);
+  return computedOrder;
 }
 
 finish.addEventListener("click", function() {
-  addOrders();
+  var computedOrder = addOrders();
+
+  finalOrder.innerHTML = "";
+  for(property in computedOrder) {
+    li = document.createElement("li");
+    li.innerHTML = computedOrder[property] + " " + flavours[property];
+    finalOrder.appendChild(li);
+  }
 });
+

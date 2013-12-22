@@ -1,5 +1,5 @@
-[{"name": "carne", "value": "carne"},
- {"name": "pollo", "value": "pollo"},
- {"name": "jamón y queso", "value": "jamon_y_queso"},
- {"name": "queso y cebolla", "value": "queso_y_cebolla"}]
+{"carne": "carne",
+ "pollo": "pollo",
+ "jamon_y_queso": "jamón y queso",
+ "queso_y_cebolla": "queso y cebolla"}
 
