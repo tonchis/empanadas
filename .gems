@@ -1,2 +1,2 @@
-thin -v 1.5.1
 shotgun -v 0.9
+rack -v 1.5.2
