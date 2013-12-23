@@ -1,12 +1,14 @@
-/* Put your CSS here */
-input {
-  width: 40px;
+.wrapper {
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appereance: none;
-  margin: 0;
+ul {
+  list-style: none outside none;
+}
+
+input {
+  width: 40px;
 }
 
 

@@ -1,6 +1,6 @@
 var template = document.getElementById("pair-template");
 var orders = document.getElementById("orders");
-var addOrder = document.getElementById("add-order");
+var newOrder = document.getElementById("new-order");
 var finish = document.getElementById("finish");
 var finalOrder = document.getElementById("final-order");
 var li;
@@ -8,7 +8,8 @@ var ul;
 
 function copyTemplateInto(element) {
   for(var i = 0; i < template.children.length; i++) {
-    element.appendChild(template.children[i].cloneNode());
+    console.log(template.children[i]);
+    element.appendChild(template.children[i].cloneNode(true));
   }
 }
 
@@ -17,12 +18,12 @@ function addPair(order) {
   copyTemplateInto(li);
   order.appendChild(li);
 
-  var lastPair = li.getElementsByTagName("input")[0];
+  var input = li.getElementsByTagName("input")[0];
   var addPairOnFocus = function() {
     addPair(order);
-    lastPair.removeEventListener("focusin", addPairOnFocus);
+    input.removeEventListener("focusin", addPairOnFocus);
   };
-  lastPair.addEventListener("focusin", addPairOnFocus);
+  input.addEventListener("focusin", addPairOnFocus);
 }
 
 var flavours;
@@ -43,16 +44,17 @@ request.onreadystatechange = function() {
 request.open("GET", "/js/flavours.json");
 request.send();
 
-addOrder.addEventListener("click", function() {
+newOrder.addEventListener("click", function() {
   var currentId = parseInt(orders.lastElementChild.getAttribute("data-id")) + 1;
   ul = document.createElement("ul");
   ul.setAttribute("data-id", currentId);
+  ul.setAttribute("id", "order-" + currentId);
   addPair(ul);
   orders.appendChild(ul);
 });
 
 function addOrders() {
-  computedOrder = {};
+  computedOrder = {total: 0};
   for(var i = 0; i < orders.getElementsByTagName("ul").length; i++) {
     var order = orders.getElementsByTagName("ul")[i];
 
@@ -66,6 +68,7 @@ function addOrders() {
           computedOrder[flavour] = 0;
         }
         computedOrder[flavour] += amount;
+        computedOrder.total += amount;
       }
     }
   }
@@ -77,10 +80,18 @@ finish.addEventListener("click", function() {
   var computedOrder = addOrders();
 
   finalOrder.innerHTML = "";
+  finalOrder.appendChild(document.createElement("ul"));
   for(property in computedOrder) {
-    li = document.createElement("li");
-    li.innerHTML = computedOrder[property] + " " + flavours[property];
-    finalOrder.appendChild(li);
+    if(property !== "total") {
+      li = document.createElement("li");
+      li.innerHTML = computedOrder[property] + " " + flavours[property];
+      finalOrder.lastElementChild.appendChild(li);
+    }
   }
+
+  var span = document.createElement("span");
+  span.innerHTML = "Total: " + computedOrder.total;
+  span.innerHTML += " (" + (computedOrder.total / 12).toFixed(1) + " dozens)"
+  finalOrder.appendChild(span);
 });
 
