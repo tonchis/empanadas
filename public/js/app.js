@@ -54,7 +54,7 @@ newOrder.addEventListener("click", function() {
 });
 
 function addOrders() {
-  computedOrder = {total: 0};
+  var computedOrder = {total: 0};
   for(var i = 0; i < orders.getElementsByTagName("ul").length; i++) {
     var order = orders.getElementsByTagName("ul")[i];
 

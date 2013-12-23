@@ -3,6 +3,52 @@
   margin: 0 auto;
 }
 
+.buttons {
+  padding: 5px;
+}
+
+a.button {
+  cursor: pointer;
+  padding: 5px 8px;
+  background: #5A9CEC;
+  color: #FFF;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
+
+  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+a.button:hover, a.button:focus {
+  background: #4479BA;
+  border: solid 0.5px #2A4E77;
+
+  text-decoration: none;
+
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+}
+
+a.button:active {
+  background: #2E5481;
+  border: solid 0.5px #203E5F;
+
+  -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
 ul {
   list-style: none outside none;
 }
@@ -10,5 +56,3 @@ ul {
 input {
   width: 40px;
 }
-
-
