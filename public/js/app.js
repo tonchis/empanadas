@@ -60,8 +60,8 @@ function addOrders() {
 
     for(var j = 0; j < order.getElementsByTagName("li").length; j++) {
       var pair = order.getElementsByTagName("li")[j];
-      var amount = parseInt(pair.firstElementChild.value);
-      var flavour = pair.lastElementChild.value;
+      var amount = parseInt(pair.getElementsByTagName("input")[0].value);
+      var flavour = pair.getElementsByTagName("select")[0].value;
 
       if(!isNaN(amount)) {
         if(computedOrder[flavour] === undefined) {
@@ -80,6 +80,7 @@ finish.addEventListener("click", function() {
   var computedOrder = addOrders();
 
   finalOrder.innerHTML = "";
+  finalOrder.appendChild(document.createElement("hr"));
   finalOrder.appendChild(document.createElement("ul"));
   for(property in computedOrder) {
     if(property !== "total") {
