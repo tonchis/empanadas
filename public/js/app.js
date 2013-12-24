@@ -80,7 +80,6 @@ finish.addEventListener("click", function() {
   var computedOrder = addOrders();
 
   finalOrder.innerHTML = "";
-  finalOrder.appendChild(document.createElement("hr"));
   finalOrder.appendChild(document.createElement("ul"));
   for(property in computedOrder) {
     if(property !== "total") {
@@ -94,5 +93,6 @@ finish.addEventListener("click", function() {
   span.innerHTML = "Total: " + computedOrder.total;
   span.innerHTML += " (" + (computedOrder.total / 12).toFixed(1) + " dozens)"
   finalOrder.appendChild(span);
+  finalOrder.parentNode.insertBefore(document.createElement("hr"), finalOrder.nextSibling);
 });
 
