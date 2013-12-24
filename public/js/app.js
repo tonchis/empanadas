@@ -8,7 +8,6 @@ var ul;
 
 function copyTemplateInto(element) {
   for(var i = 0; i < template.children.length; i++) {
-    console.log(template.children[i]);
     element.appendChild(template.children[i].cloneNode(true));
   }
 }
@@ -50,6 +49,7 @@ newOrder.addEventListener("click", function() {
   ul.setAttribute("data-id", currentId);
   ul.setAttribute("id", "order-" + currentId);
   addPair(ul);
+  orders.appendChild(document.createElement("hr"));
   orders.appendChild(ul);
 });
 
