@@ -91,7 +91,7 @@ finish.addEventListener("click", function() {
 
   var span = document.createElement("span");
   span.innerHTML = "Total: " + computedOrder.total;
-  span.innerHTML += " (" + (computedOrder.total / 12).toFixed(1) + " dozens)"
+  span.innerHTML += " (" + (computedOrder.total / 12).toFixed(1) + " docenas)"
   finalOrder.appendChild(span);
   finalOrder.parentNode.insertBefore(document.createElement("hr"), finalOrder.nextSibling);
 });
