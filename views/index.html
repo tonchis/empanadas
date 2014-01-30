@@ -7,13 +7,8 @@
 
   <body>
     <div class="wrapper">
-      <div id="orders">
-        <ul id=order-0 data-id="0">
-        </ul>
-      </div>
-
-      <div id="final-order" class="final-order">
-      </div>
+      <div id="orders"></div>
+      <div id="final-order" class="final-order"></div>
 
       <div class="buttons">
         <a id="new-order" class="button">Siguiente</a>
@@ -27,6 +22,13 @@
           </select>
         </label>
       </div>
+
+      <div id="order-template" style="display: none;">
+        <ul data-order-id="0">
+          <li><input placeholder="Nombre" /></li>
+        </ul>
+      </div>
+
       <script id="app-js" type="text/javascript" src="/js/app.js"></script>
     </div>
   </body>

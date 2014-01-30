@@ -74,16 +74,20 @@ a.button:active {
 }
 
 input {
-  width: 40px;
-  height: 24px;
   border: 2px solid #bbb;
   padding: 4px 3px 3px 5px;
   background: #f8f8f8;
   outline: none;
+  margin: 0;
 
   border-radius: 6px;
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
+}
+
+input[type="number"] {
+  width: 40px;
+  height: 24px;
 }
 
 input::-webkit-outer-spin-button,
@@ -113,12 +117,6 @@ label.custom-select {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-}
-
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  .custom-select select {
-    padding-right: 30px;
-  }
 }
 
 .custom-select select:focus {

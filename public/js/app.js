@@ -1,20 +1,23 @@
-var template = document.getElementById("pair-template");
+var pairTemplate = document.getElementById("pair-template");
 var orders = document.getElementById("orders");
 var newOrder = document.getElementById("new-order");
 var finish = document.getElementById("finish");
 var finalOrder = document.getElementById("final-order");
+var orderTemplate = document.getElementById("order-template");
 var li;
 var ul;
 
-function copyTemplateInto(element) {
+function copyTemplateInto(template, element) {
   for(var i = 0; i < template.children.length; i++) {
     element.appendChild(template.children[i].cloneNode(true));
   }
+
+  return element.lastElementChild;
 }
 
 function addPair(order) {
   li = document.createElement("li");
-  copyTemplateInto(li);
+  copyTemplateInto(pairTemplate, li);
   order.appendChild(li);
 
   var input = li.getElementsByTagName("input")[0];
@@ -34,22 +37,21 @@ request.onreadystatechange = function() {
       var option = document.createElement("option");
       option.setAttribute("value", property);
       option.innerHTML = flavours[property];
-      template.getElementsByTagName("select")[0].appendChild(option);
+      pairTemplate.getElementsByTagName("select")[0].appendChild(option);
     }
 
-    addPair(orders.firstElementChild);
+    ul = copyTemplateInto(orderTemplate, orders);
+    addPair(ul);
   }
 }
 request.open("GET", "/js/flavours.json");
 request.send();
 
 newOrder.addEventListener("click", function() {
-  var currentId = parseInt(orders.lastElementChild.getAttribute("data-id")) + 1;
-  ul = document.createElement("ul");
-  ul.setAttribute("data-id", currentId);
-  ul.setAttribute("id", "order-" + currentId);
+  var currentId = parseInt(orders.lastElementChild.getAttribute("data-order-id")) + 1;
+  ul = copyTemplateInto(orderTemplate, orders);
+  ul.setAttribute("data-order-id", currentId);
   addPair(ul);
-  orders.appendChild(ul);
 });
 
 function addOrders() {
@@ -57,7 +59,8 @@ function addOrders() {
   for(var i = 0; i < orders.getElementsByTagName("ul").length; i++) {
     var order = orders.getElementsByTagName("ul")[i];
 
-    for(var j = 0; j < order.getElementsByTagName("li").length; j++) {
+    // Starting from 1 to skip the name.
+    for(var j = 1; j < order.getElementsByTagName("li").length; j++) {
       var pair = order.getElementsByTagName("li")[j];
       var amount = parseInt(pair.getElementsByTagName("input")[0].value);
       var flavour = pair.getElementsByTagName("select")[0].value;
