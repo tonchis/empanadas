@@ -49,7 +49,6 @@ newOrder.addEventListener("click", function() {
   ul.setAttribute("data-id", currentId);
   ul.setAttribute("id", "order-" + currentId);
   addPair(ul);
-  orders.appendChild(document.createElement("hr"));
   orders.appendChild(ul);
 });
 
@@ -93,6 +92,5 @@ finish.addEventListener("click", function() {
   span.innerHTML = "Total: " + computedOrder.total;
   span.innerHTML += " (" + (computedOrder.total / 12).toFixed(1) + " docenas)"
   finalOrder.appendChild(span);
-  finalOrder.parentNode.insertBefore(document.createElement("hr"), finalOrder.nextSibling);
 });
 
