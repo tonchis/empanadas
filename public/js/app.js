@@ -37,7 +37,7 @@ function HTTPromise(options) {
     }
 
     self.req.onerror = function() {
-      reject(JSON.parse(self.req.responseText));
+      reject(self.req.responseText);
     }
 
     self.req.send(self.data);
