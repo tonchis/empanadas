@@ -6,6 +6,53 @@ var finalOrder = document.getElementById("final-order");
 var orderTemplate = document.getElementById("order-template");
 var li;
 var ul;
+var promise;
+var request;
+var flavours;
+
+function HTTPromise(options) {
+  var self = this;
+
+  this.method = options.method;
+  this.url = options.url;
+  this.data = options.data;
+  this.headers = options.headers;
+  this.resolveFunction = options.resolve;
+  this.rejectFunction = options.reject;
+
+  this.req = new XMLHttpRequest();
+  this.promise = new Promise(function(resolve, reject) {
+    self.req.open(self.method, self.url);
+
+    for(var header in self.headers) {
+      self.req.setRequestHeader(header, self.headers[header]);
+    }
+
+    self.req.onload = function() {
+      if(self.req.status === 200) {
+        resolve(self.req.responseText);
+      } else {
+        reject(self.req.responseText);
+      }
+    }
+
+    self.req.onerror = function() {
+      reject(JSON.parse(self.req.responseText));
+    }
+
+    self.req.send(self.data);
+  });
+
+  this.promise.then(function(data) {
+    self.resolveFunction(data);
+  }, function(error) {
+    self.rejectFunction(error);
+  }).then(undefined, function(error) {
+    console.log("[HTTPromise error when resolving] " + error);
+  });
+
+  return this;
+}
 
 function copyTemplateInto(template, element) {
   for(var i = 0; i < template.children.length; i++) {
@@ -27,32 +74,6 @@ function addPair(order) {
   };
   input.addEventListener("focusin", addPairOnFocus);
 }
-
-var flavours;
-var request = new XMLHttpRequest();
-request.onreadystatechange = function() {
-  if(request.readyState === 4 && request.status === 200){
-    flavours = JSON.parse(request.responseText);
-    for(var property in flavours) {
-      var option = document.createElement("option");
-      option.setAttribute("value", property);
-      option.innerHTML = flavours[property];
-      pairTemplate.getElementsByTagName("select")[0].appendChild(option);
-    }
-
-    ul = copyTemplateInto(orderTemplate, orders);
-    addPair(ul);
-  }
-}
-request.open("GET", "/js/flavours.json");
-request.send();
-
-newOrder.addEventListener("click", function() {
-  var currentId = parseInt(orders.lastElementChild.getAttribute("data-order-id")) + 1;
-  ul = copyTemplateInto(orderTemplate, orders);
-  ul.setAttribute("data-order-id", currentId);
-  addPair(ul);
-});
 
 function addOrders() {
   var computedOrder = {total: 0};
@@ -77,6 +98,50 @@ function addOrders() {
 
   return computedOrder;
 }
+
+function fillFlavoursSelect(data){
+  for(var property in data) {
+    var option = document.createElement("option");
+    option.setAttribute("value", property);
+    option.innerHTML = data[property];
+    pairTemplate.getElementsByTagName("select")[0].appendChild(option);
+  }
+}
+
+if(window.Promise) {
+  var httpromise = new HTTPromise({method: "GET", url: "/js/flavours.json", resolve: function(data) {
+    flavours = JSON.parse(data)
+    fillFlavoursSelect(flavours);
+    ul = copyTemplateInto(orderTemplate, orders);
+    addPair(ul);
+  }, reject: function(error) {
+    alert("I couldn't get the flavours, reload me!");
+  }});
+} else {
+  request = new XMLHttpRequest();
+
+  request.onload = function() {
+    if(request.status === 200){
+      flavours = JSON.parse(data)
+      fillFlavoursSelect(flavours);
+      ul = copyTemplateInto(orderTemplate, orders);
+      addPair(ul);
+    }
+  }
+  request.onerror = function() {
+    alert("I couldn't get the flavours, reload me!");
+  }
+
+  request.open("GET", "/js/flavours.json");
+  request.send();
+}
+
+newOrder.addEventListener("click", function() {
+  var currentId = parseInt(orders.lastElementChild.getAttribute("data-order-id")) + 1;
+  ul = copyTemplateInto(orderTemplate, orders);
+  ul.setAttribute("data-order-id", currentId);
+  addPair(ul);
+});
 
 finish.addEventListener("click", function() {
   var computedOrder = addOrders();
